@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wathiq (واثق) - Interactive Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .view {
+            display: none;
+        }
+        .view.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-100">
+
+    <div class="flex h-screen bg-slate-100">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-md flex-shrink-0 flex flex-col">
+            <div class="h-16 flex items-center justify-center border-b">
+                <h1 class="text-2xl font-bold text-blue-600">Wathiq (واثق)</h1>
+            </div>
+            <nav id="sidebar-nav" class="flex-1 px-4 py-6 space-y-2">
+                <a href="#" data-target="search-results" class="flex items-center px-4 py-2 text-slate-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                    <i data-lucide="search" class="w-5 h-5 mr-3"></i> Tenant View
+                </a>
+                <a href="#" data-target="landlord-dashboard" class="flex items-center px-4 py-2 text-slate-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i> Landlord View
+                </a>
+            </nav>
+            <div class="px-4 py-4 border-t">
+                <div class="p-4 bg-slate-50 rounded-lg text-sm text-slate-600">
+                    <p class="font-semibold text-slate-800">Demo Guide</p>
+                    <p id="demo-guide-text" class="mt-2">Start by clicking on a property from the "Tenant View".</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 overflow-y-auto">
+            <!-- All views will be injected here -->
+        </main>
+    </div>
+    
+    <!-- TEMPLATES FOR VIEWS -->
+    
+    <template id="search-results-template">
+        <div class="view p-8" id="search-results">
+            <h2 class="text-3xl font-bold text-slate-800 mb-6">Properties in Muscat</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Property Card -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer" data-target="property-details">
+                    <img src="https://placehold.co/600x400/dbeafe/4f46e5?text=Modern+Villa" alt="Property Image" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <p class="text-sm text-slate-500">Al Mouj, Muscat</p>
+                        <h3 class="text-xl font-semibold text-slate-900 mt-1">Modern 3-Bedroom Villa</h3>
+                        <p class="text-2xl font-bold text-blue-600 mt-2">OMR 600 <span class="text-base font-normal text-slate-500">/ month</span></p>
+                        <div class="flex items-center mt-4 text-sm text-slate-600 space-x-4">
+                            <span><i data-lucide="bed-double" class="inline w-4 h-4 mr-1"></i> 3 beds</span>
+                            <span><i data-lucide="bath" class="inline w-4 h-4 mr-1"></i> 4 baths</span>
+                        </div>
+                        <div class="mt-4 bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full inline-flex items-center">
+                            <i data-lucide="badge-check" class="w-4 h-4 mr-1.5"></i> Verified Property
+                        </div>
+                    </div>
+                </div>
+                 <!-- Add more cards as needed -->
+            </div>
+        </div>
+    </template>
+
+    <template id="property-details-template">
+        <div class="view p-8" id="property-details">
+            <img src="https://placehold.co/1200x400/dbeafe/4f46e5?text=Spacious+Living+Room" alt="Property main image" class="w-full h-64 object-cover rounded-xl mb-6">
+            <div class="bg-white p-8 rounded-xl shadow-md">
+                 <h2 class="text-3xl font-bold text-slate-800">Modern 3-Bedroom Villa</h2>
+                 <p class="text-lg text-slate-500 mt-1">Al Mouj, Muscat</p>
+                 <p class="text-4xl font-bold text-blue-600 my-4">OMR 600 <span class="text-lg font-normal text-slate-500">/ month</span></p>
+                 
+                 <!-- Trust Section -->
+                 <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg my-6">
+                     <h3 class="font-semibold text-slate-800 mb-3">Trust & Verification</h3>
+                     <div class="space-y-2">
+                         <p class="flex items-center text-green-700"><i data-lucide="badge-check" class="w-5 h-5 mr-2"></i> Verified Property</p>
+                         <p class="flex items-center text-green-700"><i data-lucide="shield-check" class="w-5 h-5 mr-2"></i> Verified Landlord</p>
+                         <div class="flex items-center text-slate-600">
+                             <p class="mr-2">Landlord: Abdullah Al-Habsi</p>
+                             <div class="flex items-center text-amber-500">
+                                 <i data-lucide="star" class="w-4 h-4 fill-current"></i><span class="ml-1 font-semibold">4.5</span>
+                             </div>
+                             <a href="#" class="ml-2 text-blue-600 hover:underline text-sm" data-target="reviews-popup">(Read 3 Reviews)</a>
+                         </div>
+                     </div>
+                 </div>
+                 
+                 <button class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-lg hover:bg-blue-700 transition-colors" data-target="apply-popup">Apply to Rent</button>
+                 
+                 <div class="mt-8">
+                     <h3 class="text-xl font-semibold text-slate-800 border-b pb-2 mb-4">Description</h3>
+                     <p class="text-slate-600 leading-relaxed">A beautiful, well-maintained villa perfect for families, located in the heart of Al Mouj. Features an open-plan living space, modern kitchen, and a small private garden. Close to the marina and international school.</p>
+                 </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="landlord-dashboard-template">
+        <div class="view p-8" id="landlord-dashboard">
+            <h2 class="text-3xl font-bold text-slate-800 mb-6">Welcome back, Abdullah!</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-5 rounded-xl shadow"><p class="text-slate-500">Active Listings</p><p class="text-3xl font-bold text-slate-800 mt-1">2</p></div>
+                <div class="bg-white p-5 rounded-xl shadow"><p class="text-slate-500">New Applications</p><p class="text-3xl font-bold text-blue-600 mt-1">1</p></div>
+                <div class="bg-white p-5 rounded-xl shadow"><p class="text-slate-500">Unread Messages</p><p class="text-3xl font-bold text-slate-800 mt-1">0</p></div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow">
+                <h3 class="text-xl font-semibold text-slate-800 mb-4">New Applications</h3>
+                <div class="divide-y divide-slate-100">
+                    <div class="py-4 flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold text-slate-800">Sara Khan <span class="font-normal text-amber-500">(⭐️ 5.0)</span></p>
+                            <p class="text-sm text-slate-500">Applied for: Modern 3-Bedroom Villa</p>
+                        </div>
+                        <button class="bg-blue-100 text-blue-700 font-semibold px-4 py-2 rounded-lg text-sm hover:bg-blue-200" data-target="application-review">View Application</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    
+    <template id="application-review-template">
+        <div class="view p-8" id="application-review">
+             <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md">
+                 <p class="text-sm text-slate-500">Application for</p>
+                 <h2 class="text-2xl font-bold text-slate-800 mb-6">Modern 3-Bedroom Villa</h2>
+                 <div class="bg-slate-50 border border-slate-200 p-6 rounded-lg">
+                     <h3 class="font-semibold text-lg text-slate-800">Applicant Details</h3>
+                     <div class="mt-4 flex items-center">
+                         <img src="https://placehold.co/64x64/e0e7ff/4338ca?text=SK" class="rounded-full w-16 h-16 mr-4" alt="Sara Khan">
+                         <div>
+                             <p class="text-xl font-bold text-slate-900">Sara Khan</p>
+                             <p class="flex items-center text-green-700 mt-1"><i data-lucide="shield-check" class="w-4 h-4 mr-1.5"></i> Verified Tenant</p>
+                             <p class="flex items-center text-amber-500 mt-1"><i data-lucide="star" class="w-4 h-4 fill-current mr-1.5"></i> 5.0 Rating</p>
+                         </div>
+                     </div>
+                     <div class="mt-6">
+                        <h4 class="font-semibold text-slate-800">Message from Sara:</h4>
+                        <p class="text-slate-600 mt-2 p-4 bg-white rounded-md italic">"Hello Abdullah, my family and I are very interested in your villa. We are looking to move in early August. We have excellent references and are very quiet tenants. We would love to arrange a viewing if possible. Thank you!"</p>
+                     </div>
+                 </div>
+                 <div class="mt-8 flex flex-col sm:flex-row gap-4">
+                     <button class="flex-1 bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-colors" data-target="landlord-contract-review">Accept & Send Contract</button>
+                     <button class="flex-1 bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors" data-target="chat-view">Message Sara</button>
+                 </div>
+             </div>
+        </div>
+    </template>
+    
+    <template id="chat-view-template">
+        <div class="view p-8" id="chat-view">
+             <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md flex flex-col h-[calc(100vh-4rem)]">
+                 <div class="p-4 border-b">
+                     <h2 class="font-semibold text-slate-800">Chat with Sara Khan</h2>
+                     <p class="text-sm text-slate-500">Regarding: Modern 3-Bedroom Villa</p>
+                 </div>
+                 <div class="flex-1 p-6 space-y-4 overflow-y-auto">
+                    <!-- Chat messages here -->
+                    <div class="flex justify-end"><div class="bg-blue-600 text-white p-3 rounded-lg max-w-xs">Hello Sara, thank you for your application. The villa is still available. I would be happy to arrange a viewing.</div></div>
+                    <div class="flex justify-start"><div class="bg-slate-100 text-slate-800 p-3 rounded-lg max-w-xs">That's great to hear! We are available this weekend.</div></div>
+                 </div>
+                 <div class="p-4 border-t bg-slate-50">
+                    <p class="text-center text-slate-500 text-sm">This is a demo. Chat functionality is not live.</p>
+                 </div>
+             </div>
+        </div>
+    </template>
+
+    <template id="landlord-contract-review-template">
+        <div class="view p-8" id="landlord-contract-review">
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-slate-800 mb-4">Prepare Rental Contract</h2>
+                <p class="text-slate-600 mb-6">Please review the auto-generated agreement for Sara Khan. All details have been pre-filled.</p>
+                <!-- Contract Preview -->
+                <div class="border rounded-lg p-6 h-96 overflow-y-scroll bg-slate-50 text-sm">
+                    <h3 class="text-center font-bold text-lg mb-4">TENANCY AGREEMENT (عقد الإيجار)</h3>
+                    <p><strong>Date:</strong> 16/09/2025</p>
+                    <p><strong>Landlord (المؤجر):</strong> Abdullah Al-Habsi</p>
+                    <p><strong>Tenant (المستأجر):</strong> Sara Khan</p>
+                    <p><strong>Property (العقار):</strong> Modern 3-Bedroom Villa, Al Mouj, Muscat</p>
+                    <p><strong>Rent (الأجرة):</strong> OMR 600 per month</p>
+                    <p><strong>Deposit (التأمين):</strong> OMR 600</p>
+                    <p><strong>Lease Term (مدة الإيجار):</strong> 12 Months from 01/10/2025 to 30/09/2026</p>
+                    <p class="mt-4">--- Official Clauses from Omani Tenancy Law ---</p>
+                    <p class="mt-2 text-slate-500">[Clause 1...]</p>
+                    <p class="mt-2 text-slate-500">[Clause 2...]</p>
+                </div>
+                <button class="w-full mt-6 bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-lg hover:bg-blue-700" data-target="tenant-contract-review">Send to Tenant for Signing</button>
+            </div>
+        </div>
+    </template>
+
+    <template id="tenant-contract-review-template">
+        <div class="view p-8" id="tenant-contract-review">
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold text-slate-800 mb-4">Sign Your Rental Contract</h2>
+                <p class="text-slate-600 mb-6">Abdullah Al-Habsi has sent you the rental contract. Please review the terms carefully.</p>
+                 <div class="border rounded-lg p-6 h-96 overflow-y-scroll bg-slate-50 text-sm">
+                    <!-- Contract content is the same as landlord view -->
+                     <h3 class="text-center font-bold text-lg mb-4">TENANCY AGREEMENT (عقد الإيجار)</h3>
+                    <p><strong>Date:</strong> 16/09/2025</p>
+                    <p><strong>Landlord (المؤجر):</strong> Abdullah Al-Habsi</p>
+                    <p><strong>Tenant (المستأجر):</strong> Sara Khan</p>
+                    <p><strong>Property (العقار):</strong> Modern 3-Bedroom Villa, Al Mouj, Muscat</p>
+                    <p><strong>Rent (الأجرة):</strong> OMR 600 per month</p>
+                    <p><strong>Deposit (التأمين):</strong> OMR 600</p>
+                    <p><strong>Lease Term (مدة الإيجار):</strong> 12 Months from 01/10/2025 to 30/09/2026</p>
+                 </div>
+                 <div class="mt-6">
+                     <label for="signature" class="font-semibold text-slate-800">Digital Signature</label>
+                     <input type="text" id="signature" placeholder="Type your full name to sign" class="w-full mt-2 p-3 border rounded-md">
+                     <button class="w-full mt-4 bg-green-600 text-white font-bold py-3 px-6 rounded-lg text-lg hover:bg-green-700" data-target="escrow-payment">Sign Contract & Proceed to Payment</button>
+                 </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="escrow-payment-template">
+        <div class="view p-8" id="escrow-payment">
+             <div class="max-w-lg mx-auto bg-white p-8 rounded-xl shadow-md">
+                 <h2 class="text-2xl font-bold text-slate-800 mb-2">Secure Your New Home!</h2>
+                 <p class="text-slate-600 mb-6">The final step is to pay the initial amount into our secure escrow service.</p>
+                 <div class="bg-slate-50 border p-4 rounded-lg">
+                     <h3 class="font-semibold text-slate-800">Payment Breakdown</h3>
+                     <div class="flex justify-between mt-2 text-slate-600"><span>First Month's Rent:</span><span>OMR 600</span></div>
+                     <div class="flex justify-between text-slate-600"><span>Security Deposit:</span><span>OMR 600</span></div>
+                     <div class="flex justify-between font-bold text-slate-800 mt-2 pt-2 border-t"><span>Total Due Today:</span><span>OMR 1200</span></div>
+                 </div>
+                 <p class="text-xs text-slate-500 mt-2 text-center">Funds will only be released to the landlord 24 hours after you successfully move in.</p>
+                 <button class="w-full mt-6 bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-lg hover:bg-blue-700" data-target="confirmation">Pay OMR 1200 Securely</button>
+             </div>
+        </div>
+    </template>
+    
+    <template id="confirmation-template">
+        <div class="view p-8 text-center" id="confirmation">
+             <div class="max-w-lg mx-auto bg-white p-12 rounded-xl shadow-md">
+                <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto">
+                    <i data-lucide="check-circle" class="w-12 h-12"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-800 mt-6">Congratulations!</h2>
+                <p class="text-slate-600 mt-2">Your payment has been received and is held securely. The property is officially yours!</p>
+                <button class="mt-8 bg-slate-200 text-slate-800 font-bold py-3 px-6 rounded-lg hover:bg-slate-300" data-target="search-results">Back to Home</button>
+             </div>
+        </div>
+    </template>
+
+    <!-- MODAL TEMPLATES -->
+     <div id="modal-container" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+        <!-- Modal content will be injected here -->
+     </div>
+
+     <template id="reviews-popup-template">
+        <div class="bg-white rounded-xl shadow-xl max-w-lg w-full">
+            <div class="p-6 border-b flex justify-between items-center">
+                <h3 class="text-xl font-semibold text-slate-800">Reviews for Abdullah Al-Habsi</h3>
+                <button id="close-modal" class="text-slate-400 hover:text-slate-600">&times;</button>
+            </div>
+            <div class="p-6 space-y-4 max-h-96 overflow-y-auto">
+                <div class="border-b pb-3">
+                    <p class="font-semibold text-slate-800">Fatima S. <span class="text-amber-500">⭐️⭐️⭐️⭐️⭐️</span></p>
+                    <p class="text-sm text-slate-500">Verified Tenant, Jan 2024 - Jan 2025</p>
+                    <p class="text-slate-600 mt-2 italic">"Abdullah was a fantastic landlord. Very responsive whenever we had a maintenance issue. Highly recommended."</p>
+                </div>
+                <div>
+                    <p class="font-semibold text-slate-800">John P. <span class="text-amber-500">⭐️⭐️⭐️⭐️</span></p>
+                    <p class="text-sm text-slate-500">Verified Tenant, 2023</p>
+                    <p class="text-slate-600 mt-2 italic">"Good landlord overall. The apartment was great and in good condition."</p>
+                </div>
+            </div>
+        </div>
+     </template>
+      <template id="apply-popup-template">
+        <div class="bg-white rounded-xl shadow-xl max-w-lg w-full">
+            <div class="p-6 border-b flex justify-between items-center">
+                <h3 class="text-xl font-semibold text-slate-800">Apply to Rent This Property?</h3>
+                <button id="close-modal" class="text-slate-400 hover:text-slate-600">&times;</button>
+            </div>
+            <div class="p-6">
+                <p class="text-slate-600">Your verified profile will be sent to the landlord, Abdullah Al-Habsi.</p>
+                <textarea class="w-full mt-4 p-3 border rounded-md" rows="3" placeholder="Optional message..."></textarea>
+                <button class="w-full mt-4 bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700" data-target="landlord-dashboard">Send Application</button>
+            </div>
+        </div>
+     </template>
+
+
+    <script>
+        const mainContent = document.getElementById('main-content');
+        const modalContainer = document.getElementById('modal-container');
+        const demoGuideText = document.getElementById('demo-guide-text');
+        const sidebarNav = document.getElementById('sidebar-nav');
+
+        const guideTexts = {
+            'search-results': "Start by clicking the property card to see more details.",
+            'property-details': "Here you see the landlord is verified. Click 'Read Reviews' for more confidence, or 'Apply to Rent' to proceed.",
+            'landlord-dashboard': "This is the landlord's view. A new application from Sara has arrived. Click 'View Application'.",
+            'application-review': "The landlord sees Sara's verified profile. He can message her or 'Accept & Send Contract'.",
+            'chat-view': "Landlords and tenants can securely message here to arrange viewings without sharing personal contact info.",
+            'landlord-contract-review': "The contract is auto-generated. The landlord reviews and sends it for the tenant's signature.",
+            'tenant-contract-review': "The tenant reviews the same contract and provides a legally-binding digital signature.",
+            'escrow-payment': "The final step. The tenant pays into our secure escrow. The funds are held until after move-in.",
+            'confirmation': "The deal is done! A secure and transparent process completed from start to finish."
+        };
+
+        function showView(viewId) {
+            const template = document.getElementById(`${viewId}-template`);
+            if (!template) {
+                console.error(`Template not found for view: ${viewId}`);
+                return;
+            }
+            mainContent.innerHTML = template.innerHTML;
+            const viewElement = mainContent.firstElementChild;
+            if (viewElement) {
+                 viewElement.classList.add('active');
+            }
+            lucide.createIcons();
+            updateGuide(viewId);
+            updateSidebar(viewId);
+        }
+        
+        function showModal(modalId) {
+            const template = document.getElementById(`${modalId}-template`);
+             if (!template) {
+                console.error(`Template not found for modal: ${modalId}`);
+                return;
+            }
+            modalContainer.innerHTML = template.innerHTML;
+            modalContainer.classList.remove('hidden');
+            modalContainer.classList.add('flex');
+            
+            const closeButton = modalContainer.querySelector('#close-modal');
+            if (closeButton) {
+                closeButton.addEventListener('click', () => {
+                     modalContainer.classList.add('hidden');
+                     modalContainer.classList.remove('flex');
+                });
+            }
+        }
+
+        function updateGuide(viewId) {
+            demoGuideText.textContent = guideTexts[viewId] || "Click an interactive element to proceed.";
+        }
+        
+        function updateSidebar(viewId) {
+            const tenantViews = ['search-results', 'property-details', 'tenant-contract-review', 'escrow-payment', 'confirmation'];
+            const landlordViews = ['landlord-dashboard', 'application-review', 'chat-view', 'landlord-contract-review'];
+            
+            const tenantLink = sidebarNav.querySelector('[data-target="search-results"]');
+            const landlordLink = sidebarNav.querySelector('[data-target="landlord-dashboard"]');
+
+            tenantLink.classList.remove('bg-blue-50', 'text-blue-600', 'font-semibold');
+            landlordLink.classList.remove('bg-blue-50', 'text-blue-600', 'font-semibold');
+
+            if (tenantViews.includes(viewId)) {
+                tenantLink.classList.add('bg-blue-50', 'text-blue-600', 'font-semibold');
+            } else if (landlordViews.includes(viewId)) {
+                landlordLink.classList.add('bg-blue-50', 'text-blue-600', 'font-semibold');
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            let targetElement = e.target.closest('[data-target]');
+
+            if (targetElement) {
+                e.preventDefault();
+                const targetId = targetElement.dataset.target;
+                
+                if (targetId.includes('-popup')) {
+                    showModal(targetId);
+                } else if (targetId === 'landlord-dashboard' && modalContainer.classList.contains('flex')) {
+                    // This is the "Send Application" button inside the modal
+                    modalContainer.classList.add('hidden');
+                    modalContainer.classList.remove('flex');
+                    showView(targetId);
+                }
+                else {
+                    showView(targetId);
+                }
+            }
+        });
+        
+        // Initial load
+        window.addEventListener('DOMContentLoaded', () => {
+            showView('search-results');
+            lucide.createIcons();
+        });
+
+    </script>
+</body>
+</html>
