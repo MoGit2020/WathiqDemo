@@ -1,3 +1,5 @@
 node_modules/
 wathiq.db
+wathiq.db-shm
+wathiq.db-wal
 .env
